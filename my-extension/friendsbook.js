@@ -1,13 +1,25 @@
-const bannedWords = ['تابع', 'متابعة', 'انضمام', 'ريلز ومقاطع الفيديو القصيرة'].map((word) => `>${word}<`)
-const postQuery = '[role="main"] [data-pagelet]';
+const bannedWords = [
+    // Arabic support
+    'تابع', 'متابعة', 'انضمام', 'ريلز ومقاطع الفيديو القصيرة',
+    // English support
+    'Follow', 'Join'
+].map((word) => `>${word}<`)
+
+const queries = [
+    // Arabic
+    '[role="main"] [data-pagelet]',
+    // English
+    '[data-virtualized]',
+]
+
 
 const deleteIfAd = (node) => {
     try {
-        if (node.matches(postQuery)) {
+        if (queries.some((query) => node.matches(query))) {
             if (bannedWords.some((word) => node.innerHTML.includes(word))) {
-                node.remove()
+                node.style.setProperty('display', 'none', 'important');
             }
-        }
+        } 
     } catch (err) {
 
     }
@@ -27,9 +39,11 @@ observer.observe(document, {
 });
 
 const removeAdPosts = () => {
-    const posts = Array.from(document.querySelectorAll(postQuery));
-    for (const post of posts) {
-        deleteIfAd(post);
+    for(const query of queries) {
+        const posts = Array.from(document.querySelectorAll(query));
+        for (const post of posts) {
+            deleteIfAd(post);
+        }
     }
 }
 
