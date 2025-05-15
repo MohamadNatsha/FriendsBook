@@ -13,15 +13,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Zip extension folder
         run: |
           cd my-extension
-          zip -r ../friendsbook.zip ./*
+          zip -r ../friendsbook.zip .
 
       - name: Upload ZIP artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: chrome-extension-zip
           path: friendsbook.zip
