@@ -1,15 +1,15 @@
-name: Zip Chrome Extension
+name: Create Release with Extension
 
 on:
   push:
-    branches:
-      - main
     tags:
-      - 'v0.1.0'
+      - 'v*'  # Trigger on any version tag (e.g., v1.0.0, v1.2.3)
 
 jobs:
-  zip:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to create releases
 
     steps:
       - name: Checkout code
@@ -18,10 +18,13 @@ jobs:
       - name: Zip extension folder
         run: |
           cd my-extension
-          zip -r ../friendsbook.zip .
+          zip -r ../friendsbook-${{ github.ref_name }}.zip .
 
-      - name: Upload ZIP artifact
-        uses: actions/upload-artifact@v4
+      - name: Create Release and Upload ZIP
+        uses: softprops/action-gh-release@v1
         with:
-          name: chrome-extension-zip
-          path: friendsbook.zip
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: "Chrome Extension Bundle"
+          files: |
+            friendsbook-${{ github.ref_name }}.zip
