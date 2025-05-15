@@ -1,0 +1,25 @@
+name: Zip Chrome Extension
+
+on:
+  push:
+    tags:
+      - 'v0.1.0'
+
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Zip extension folder
+        run: |
+          cd my-extension
+          zip -r ../friendsbook.zip ./*
+
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: chrome-extension-zip
+          path: friendsbook.zip
