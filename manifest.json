@@ -1,0 +1,26 @@
+{
+    "name": "Facebook Focus",
+    "description": "Remove facebook distracting suggestions",
+    "permissions": [
+        "storage",
+        "scripting",
+        "activeTab"
+    ],
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {
+        "default_popup": "main.html",
+        "default_icon": "icon.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.facebook.com/*"
+            ],
+            "run_at": "document_start",
+            "js": [
+                "friendsbook.js"
+            ]
+        }
+    ]
+}
